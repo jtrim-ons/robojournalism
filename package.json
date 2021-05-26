@@ -1,13 +1,13 @@
 {
-	"name": "robojournalism",
+	"name": "robojournalist",
 	"version": "0.0.0",
 	"description": "A simple template system",
 	"license": "MIT",
-	"repository": "jtrim-ons/robojournalism",
+	"repository": "jtrim-ons/robojournalist",
 	"author": {
 		"name": "James Trimble",
 		"email": "jtrim.ons@gmail.com",
-		"url": "https://github.com/jtrim-ons/robojournalism"
+		"url": "https://github.com/jtrim-ons/robojournalist"
 	},
 	"type": "module",
 	"exports": "./index.js",

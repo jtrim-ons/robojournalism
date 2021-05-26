@@ -19,7 +19,7 @@ const createText = (template, dict) => {
 
 	const error = function (m) {
 		throw JSON.stringify({
-			name: 'Robo-journalism error',
+			name: 'Robo-journalist error',
 			message: m,
 			at,
 			text: template

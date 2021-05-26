@@ -1,25 +1,25 @@
-# robojournalism
+# robojournalist
 
 > A simple template system
 
 ## Install
 
 ```
-$ npm install robojournalism
+$ npm install robojournalist
 ```
 
 ## Usage
 
 ```js
-import robojournalism from 'robojournalism';
+import robojournalist from 'robojournalist';
 
-robojournalism('unicorns');
+robojournalist('unicorns');
 //=> 'unicorns & rainbows'
 ```
 
 ## API
 
-### robojournalism(input, options?)
+### robojournalist(input, options?)
 
 #### input
 
