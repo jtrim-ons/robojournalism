@@ -1,3 +1,36 @@
+const ordinal = i => {
+	if (i < 10) {
+		return [
+			'',
+			'first',
+			'second',
+			'third',
+			'fourth',
+			'fifth',
+			'sixth',
+			'seventh',
+			'eighth',
+			'ninth'
+		][i];
+	}
+
+	const j = i % 10;
+	const k = i % 100;
+	if (j === 1 && k !== 11) {
+		return i + 'st';
+	}
+
+	if (j === 2 && k !== 12) {
+		return i + 'nd';
+	}
+
+	if (j === 3 && k !== 13) {
+		return i + 'rd';
+	}
+
+	return i + 'th';
+};
+
 const createText = (template, dict) => {
 	//
 	// TODO: < and >
@@ -47,6 +80,54 @@ const createText = (template, dict) => {
 		return dict[key];
 	};
 
+	const rpn = function (key) {
+		const tokens = key.split(' ');
+		const operators = {
+			'+': (a, b) => a + b,
+			'-': (a, b) => a - b,
+			'*': (a, b) => a * b,
+			'/': (a, b) => a / b,
+			'<': (a, b) => a < b,
+			'>': (a, b) => a > b,
+			'<=': (a, b) => a <= b,
+			'>=': (a, b) => a >= b
+		};
+		const stack = [];
+		for (const token of tokens) {
+			if (/^-?\d+$/.test(token)) {
+				// An integer literal
+				stack.push(Number(token));
+			} else if (token in operators) {
+				const b = Number(stack.pop());
+				const a = Number(stack.pop());
+				stack.push(operators[token](a, b));
+			} else if (token === '~abs') {
+				stack[stack.length - 1] = Math.abs(stack[stack.length - 1]);
+			} else if (token === '~ord') {
+				stack[stack.length - 1] = ordinal(Number(stack[stack.length - 1]));
+			} else if (token === '~ord\'') {
+				let result = ordinal(Number(stack.pop()));
+				if (result === 'first') {
+					result = '';
+				} else {
+					result += ' ';
+				}
+
+				stack.push(result);
+			} else if (token.charAt(0) === '^') {
+				stack[stack.length - 1] = getValue(token.slice(1))(stack[stack.length - 1]);
+			} else {
+				stack.push(getValue(token));
+			}
+		}
+
+		if (stack.length !== 1) {
+			error('Invalid RPN');
+		}
+
+		return String(stack[0]);
+	};
+
 	const eitherOr = function (which) {
 		next('?');
 		const first = parse();
@@ -69,7 +150,7 @@ const createText = (template, dict) => {
 		while (getCh()) {
 			if (ch === '}') {
 				next('}');
-				return getValue(varName);
+				return rpn(varName);
 			}
 
 			if (ch === '?') {
