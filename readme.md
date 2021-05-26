@@ -13,27 +13,33 @@ $ npm install robojournalist
 ```js
 import robojournalist from 'robojournalist';
 
-robojournalist('unicorns');
-//=> 'unicorns & rainbows'
+robojournalist('The value of a is {a}.', {a: 'b'});
+//=> 'The value of a is b.'
+
+robojournalist('{which?a:{b}}', {which: true, b: 'y'});
+//=> 'a'
+
+robojournalist('{which?a:{b}}', {which: false, b: 'y'});
+//=> 'y'
 ```
+
+Braces can be nested to any depth.
+
+Use `{:}` and `{?}` to add a colon and question mark to the output.
 
 ## API
 
-### robojournalist(input, options?)
+### robojournalist(template, data)
 
-#### input
+#### template
 
 Type: `string`
 
-Lorem ipsum.
+The template string, with braced variable names.
 
-#### options
+#### data
 
 Type: `object`
 
-##### foo
-
-Type: `boolean`\
-Default: `false`
-
-Lorem ipsum.
+If the template string refers to `{varName}`, the value of `data.varName` will
+be placed in the output.
