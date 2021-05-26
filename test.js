@@ -1,13 +1,17 @@
 import test from 'ava';
-import robojournalism from './index.js';
+import createText from './index.js';
 
 test('title', t => {
 	t.throws(() => {
-		robojournalism(123);
+		createText(123);
 	}, {
 		instanceOf: TypeError,
 		message: 'Expected a string, got number'
 	});
 
-	t.is(robojournalism('unicorns'), 'unicorns & rainbows');
+	t.is(createText('{a}', {a: 'b'}), 'b');
+	t.is(createText('{a?b:c}', {a: true}), 'b');
+	t.is(createText('{a?b:c}', {a: false}), 'c');
+	t.is(createText('{a?{b}:{c}}', {a: true, b: 'x', c: 'y'}), 'x');
+	t.is(createText('{a?{b}:{c}}', {a: false, b: 'x', c: 'y'}), 'y');
 });
