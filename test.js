@@ -19,6 +19,8 @@ test('title', t => {
 	t.is(createText('{1 2 +}', {}), '3');
 	t.is(createText('{a b +}', {a: 1, b: 2}), '3');
 	t.is(createText('{a 3 -}', {a: 10}), '7');
+	t.is(createText('{a 0 <?yes:no}', {a: 1}), 'no');
+	t.is(createText('{a 0 <?yes:no}', {a: -1}), 'yes');
 	t.is(createText('{a ~abs}', {a: 3}), '3');
 	t.is(createText('{a ~abs}', {a: -3}), '3');
 	t.is(createText('{1 ~ord}', {}), 'first');

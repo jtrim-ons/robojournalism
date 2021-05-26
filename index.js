@@ -125,7 +125,7 @@ const createText = (template, dict) => {
 			error('Invalid RPN');
 		}
 
-		return String(stack[0]);
+		return stack[0];
 	};
 
 	const eitherOr = function (which) {
@@ -154,7 +154,7 @@ const createText = (template, dict) => {
 			}
 
 			if (ch === '?') {
-				return eitherOr(getValue(varName));
+				return eitherOr(rpn(varName));
 			}
 
 			varName += ch;
