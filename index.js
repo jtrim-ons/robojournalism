@@ -32,10 +32,6 @@ const ordinal = i => {
 };
 
 const createText = (template, dict) => {
-	//
-	// TODO: < and >
-	//
-
 	// This is based on Douglas Crockford's old json_parse https://github.com/douglascrockford/JSON-js/blob/03157639c7a7cddd2e9f032537f346f1a87c0f6d/json_parse.js
 
 	if (typeof template !== 'string') {
@@ -73,11 +69,17 @@ const createText = (template, dict) => {
 	};
 
 	const getValue = function (key) {
-		if (!(key in dict)) {
-			error(`${key} is not a key of the data dictionary.`);
+		const parts = key.split('.');
+		let d = dict;
+		for (const part of parts) {
+			try {
+				d = d[part];
+			} catch {
+				error(`${key} is not in the data dictionary.`);
+			}
 		}
 
-		return dict[key];
+		return d;
 	};
 
 	const rpn = function (key) {

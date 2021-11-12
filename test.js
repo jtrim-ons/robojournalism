@@ -12,6 +12,7 @@ test('title', t => {
 	});
 
 	t.is(createText('{a}', {a: 'b'}), 'b');
+	t.is(createText('{a.b}', {a: {b: 123}}), '123');
 	t.is(createText('{a?b:c}', {a: true}), 'b');
 	t.is(createText('{a?b:c}', {a: false}), 'c');
 	t.is(createText('{a?{b}:{c}}', {a: true, b: 'x', c: 'y'}), 'x');

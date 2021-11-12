@@ -16,6 +16,9 @@ import robojournalist from 'robojournalist';
 robojournalist('The value of a is {a}.', {a: 'b'});
 //=> 'The value of a is b.'
 
+robojournalist('The value of a.b is {a.b}.', {a: {b: 'c'}});
+//=> 'The value of a.b is c.'
+
 robojournalist('{which?a:{b}}', {which: true, b: 'y'});
 //=> 'a'
 
