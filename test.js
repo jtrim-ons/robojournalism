@@ -22,6 +22,12 @@ test('title', t => {
 	t.is(createText('{a 3 -}', {a: 10}), '7');
 	t.is(createText('{a 0 <?yes:no}', {a: 1}), 'no');
 	t.is(createText('{a 0 <?yes:no}', {a: -1}), 'yes');
+	t.is(createText('{a ,}', {a: 3}), '3');
+	t.is(createText('{a ,}', {a: 12345}), '12,345');
+	t.is(createText('{a .0}', {a: 1.234}), '1');
+	t.is(createText('{a .1}', {a: 1.234}), '1.2');
+	t.is(createText('{a .1 ,}', {a: 1001.234}), '1,001.2');
+	t.is(createText('{a .2}', {a: 1.236}), '1.24');
 	t.is(createText('{a ~abs}', {a: 3}), '3');
 	t.is(createText('{a ~abs}', {a: -3}), '3');
 	t.is(createText('{1 ~ord}', {}), 'first');

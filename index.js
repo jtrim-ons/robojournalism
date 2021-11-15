@@ -31,6 +31,9 @@ const ordinal = i => {
 	return i + 'th';
 };
 
+// https://stackoverflow.com/a/2901298/3347737
+const numberWithCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
 const createText = (template, dict) => {
 	// This is based on Douglas Crockford's old json_parse https://github.com/douglascrockford/JSON-js/blob/03157639c7a7cddd2e9f032537f346f1a87c0f6d/json_parse.js
 
@@ -103,6 +106,14 @@ const createText = (template, dict) => {
 				const b = Number(stack.pop());
 				const a = Number(stack.pop());
 				stack.push(operators[token](a, b));
+			} else if (token === ',') {
+				stack[stack.length - 1] = numberWithCommas(stack[stack.length - 1]);
+			} else if (token === '.0') {
+				stack[stack.length - 1] = stack[stack.length - 1].toFixed(0);
+			} else if (token === '.1') {
+				stack[stack.length - 1] = stack[stack.length - 1].toFixed(1);
+			} else if (token === '.2') {
+				stack[stack.length - 1] = stack[stack.length - 1].toFixed(2);
 			} else if (token === '~abs') {
 				stack[stack.length - 1] = Math.abs(stack[stack.length - 1]);
 			} else if (token === '~ord') {
