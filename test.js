@@ -38,6 +38,8 @@ test('title', t => {
 	t.is(createText('the {23 ~ord\'}highest', {}), 'the 23rd highest');
 	t.is(createText('the {a ~ord\'}highest', {a: 1}), 'the highest');
 	t.is(createText('the {a ~ord\'}highest', {a: 23}), 'the 23rd highest');
+	t.is(createText('{name \'}', {name: 'James'}), 'James\'');
+	t.is(createText('{name \'}', {name: 'Alice'}), 'Alice\'s');
 	t.is(createText('{place ^regionThe}', {place: 'Wales', regionThe}), 'Wales');
 	t.is(createText('{place ^regionThe}', {place: 'North East', regionThe}), 'The North East');
 });

@@ -34,6 +34,14 @@ const ordinal = i => {
 // https://stackoverflow.com/a/2901298/3347737
 const numberWithCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
+const possessive = s => {
+	if (s[s.length - 1] === 's') {
+		return s + '\'';
+	}
+
+	return s + '\'s';
+};
+
 const createText = (template, dict) => {
 	// This is based on Douglas Crockford's old json_parse https://github.com/douglascrockford/JSON-js/blob/03157639c7a7cddd2e9f032537f346f1a87c0f6d/json_parse.js
 
@@ -106,6 +114,8 @@ const createText = (template, dict) => {
 				const b = Number(stack.pop());
 				const a = Number(stack.pop());
 				stack.push(operators[token](a, b));
+			} else if (token === '\'') {
+				stack[stack.length - 1] = possessive(stack[stack.length - 1]);
 			} else if (token === ',') {
 				stack[stack.length - 1] = numberWithCommas(stack[stack.length - 1]);
 			} else if (token === '.0') {
