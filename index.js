@@ -169,6 +169,13 @@ const createText = (template, dict) => {
 			return ':';
 		}
 
+		if (ch === '?') {
+			// {?} adds a colon to the output
+			next('?');
+			next('}');
+			return '?';
+		}
+
 		let varName = '';
 		while (getCh()) {
 			if (ch === '}') {

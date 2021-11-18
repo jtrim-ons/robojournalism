@@ -42,4 +42,8 @@ test('title', t => {
 	t.is(createText('{name \'}', {name: 'Alice'}), 'Alice\'s');
 	t.is(createText('{place ^regionThe}', {place: 'Wales', regionThe}), 'Wales');
 	t.is(createText('{place ^regionThe}', {place: 'North East', regionThe}), 'The North East');
+	t.is(createText('a{:}b', {}), 'a:b');
+	t.is(createText('a{?}b', {}), 'a?b');
+	t.is(createText('a{x?{:}:{?}}b', {x: true}), 'a:b');
+	t.is(createText('a{x?{:}:{?}}b', {x: false}), 'a?b');
 });
