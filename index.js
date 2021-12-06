@@ -103,7 +103,8 @@ const createText = (template, dict) => {
 			'<': (a, b) => a < b,
 			'>': (a, b) => a > b,
 			'<=': (a, b) => a <= b,
-			'>=': (a, b) => a >= b
+			'>=': (a, b) => a >= b,
+			'===': (a, b) => a === b
 		};
 		const stack = [];
 		for (const token of tokens) {
