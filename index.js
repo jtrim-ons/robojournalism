@@ -58,6 +58,12 @@ const numberWord = i => {
 	return i;
 };
 
+const addAOrAn = n => {
+	n = String(n);
+	const useAn = n === '11' || n === '18' || n[0] === '8' || n[0] === 'e';
+	return useAn ? 'an ' + n : 'a ' + n;
+};
+
 // https://stackoverflow.com/a/2901298/3347737
 const numberWithCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -144,7 +150,8 @@ const createText = (template, dict) => {
 			'~abs': a => Math.abs(a),
 			'~ord': a => ordinal(Number(a)),
 			'~ord\'': a => ordinalExcludingFirst(Number(a)),
-			'~word': a => numberWord(Number(a))
+			'~word': a => numberWord(Number(a)),
+			'~aan': a => addAOrAn(a)
 		};
 		const stack = [];
 		for (const token of tokens) {

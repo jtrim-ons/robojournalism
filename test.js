@@ -52,6 +52,14 @@ test('title', t => {
 	t.is(createText('{9 ~word}', {}), 'nine');
 	t.is(createText('{10 ~word}', {}), '10');
 	t.is(createText('{a ~word}', {a: 5.5}), '5.5');
+	t.is(createText('{1 ~aan}', {}), 'a 1');
+	t.is(createText('{11 ~aan}', {}), 'an 11');
+	t.is(createText('{18 ~aan}', {}), 'an 18');
+	t.is(createText('{8 ~aan}', {}), 'an 8');
+	t.is(createText('{8 ~word ~aan}', {}), 'an eight');
+	t.is(createText('{18 ~word ~aan}', {}), 'an 18');
+	t.is(createText('{700 ~aan}', {}), 'a 700');
+	t.is(createText('{800 ~aan}', {}), 'an 800');
 	t.is(createText('{1 ~ord}', {}), 'first');
 	t.is(createText('{23 ~ord}', {}), '23rd');
 	t.is(createText('{a ~ord}', {a: 1}), 'first');
