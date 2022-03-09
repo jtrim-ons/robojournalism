@@ -31,6 +31,33 @@ const ordinal = i => {
 	return i + 'th';
 };
 
+const ordinalExcludingFirst = i => {
+	if (i === 1) {
+		return '';
+	}
+
+	return ordinal(i) + ' ';
+};
+
+const numberWord = i => {
+	if (i === Math.floor(i) && i >= 1 && i <= 9) {
+		return [
+			'',
+			'one',
+			'two',
+			'three',
+			'four',
+			'five',
+			'six',
+			'seven',
+			'eight',
+			'nine'
+		][i];
+	}
+
+	return i;
+};
+
 // https://stackoverflow.com/a/2901298/3347737
 const numberWithCommas = x => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -95,7 +122,7 @@ const createText = (template, dict) => {
 
 	const rpn = function (key) {
 		const tokens = key.split(' ');
-		const operators = {
+		const binaryOperators = {
 			'+': (a, b) => a + b,
 			'-': (a, b) => a - b,
 			'*': (a, b) => a * b,
@@ -106,38 +133,31 @@ const createText = (template, dict) => {
 			'>=': (a, b) => a >= b,
 			'===': (a, b) => a === b
 		};
+		const unaryOperators = {
+			'\'': a => possessive(a),
+			',': a => numberWithCommas(a),
+			'.-2': a => (a / 100).toFixed(0) * 100,
+			'.-1': a => (a / 10).toFixed(0) * 10,
+			'.0': a => a.toFixed(0),
+			'.1': a => a.toFixed(1),
+			'.2': a => a.toFixed(2),
+			'~abs': a => Math.abs(a),
+			'~ord': a => ordinal(Number(a)),
+			'~ord\'': a => ordinalExcludingFirst(Number(a)),
+			'~word': a => numberWord(Number(a))
+		};
 		const stack = [];
 		for (const token of tokens) {
 			if (/^-?\d+$/.test(token)) {
 				// An integer literal
 				stack.push(Number(token));
-			} else if (token in operators) {
+			} else if (token in binaryOperators) {
 				const b = Number(stack.pop());
 				const a = Number(stack.pop());
-				stack.push(operators[token](a, b));
-			} else if (token === '\'') {
-				stack[stack.length - 1] = possessive(stack[stack.length - 1]);
-			} else if (token === ',') {
-				stack[stack.length - 1] = numberWithCommas(stack[stack.length - 1]);
-			} else if (token === '.0') {
-				stack[stack.length - 1] = stack[stack.length - 1].toFixed(0);
-			} else if (token === '.1') {
-				stack[stack.length - 1] = stack[stack.length - 1].toFixed(1);
-			} else if (token === '.2') {
-				stack[stack.length - 1] = stack[stack.length - 1].toFixed(2);
-			} else if (token === '~abs') {
-				stack[stack.length - 1] = Math.abs(stack[stack.length - 1]);
-			} else if (token === '~ord') {
-				stack[stack.length - 1] = ordinal(Number(stack[stack.length - 1]));
-			} else if (token === '~ord\'') {
-				let result = ordinal(Number(stack.pop()));
-				if (result === 'first') {
-					result = '';
-				} else {
-					result += ' ';
-				}
-
-				stack.push(result);
+				stack.push(binaryOperators[token](a, b));
+			} else if (token in unaryOperators) {
+				const a = stack.pop();
+				stack.push(unaryOperators[token](a));
 			} else if (token.charAt(0) === '^') {
 				stack[stack.length - 1] = getValue(token.slice(1))(stack[stack.length - 1]);
 			} else {
